@@ -1,12 +1,12 @@
 package com.shubham.portfolio.config;
 
-import java.util.List;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 public class CorsConfig {
@@ -17,8 +17,8 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(
-                "http://localhost:5173",
-                "https://portfolio-fronted-diya.onrender.com"
+                "https://portfolio-fronted-diya.onrender.com",
+                "http://localhost:5173"
         ));
 
         configuration.setAllowedMethods(List.of(
@@ -31,7 +31,11 @@ public class CorsConfig {
         ));
 
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
+
+        // If you are using cookies/session:
+        // configuration.setAllowCredentials(true);
+
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
