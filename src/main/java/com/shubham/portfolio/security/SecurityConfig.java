@@ -3,6 +3,7 @@ package com.shubham.portfolio.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,10 +23,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource))
+                // CORS configuration
+                .cors(cors -> cors
+                        .configurationSource(corsConfigurationSource)
+                )
 
+                // Disable CSRF for REST API
                 .csrf(csrf -> csrf.disable())
 
+                // JWT based authentication
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS
@@ -34,19 +40,24 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
-                        // Authentication APIs
+                        // IMPORTANT:
+                        // Allow browser CORS preflight requests
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // Login / Register APIs
                         .requestMatchers("/api/auth/**").permitAll()
 
-                        // Public APIs
+                        // Public portfolio APIs
                         .requestMatchers("/api/public/**").permitAll()
 
-                        // Admin APIs
+                        // Admin APIs require JWT authentication
                         .requestMatchers("/api/admin/**").authenticated()
 
                         // Other requests
                         .anyRequest().permitAll()
                 )
 
+                // JWT authentication filter
                 .addFilterBefore(
                         jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class
