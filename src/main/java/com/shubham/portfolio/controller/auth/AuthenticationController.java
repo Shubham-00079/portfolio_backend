@@ -6,7 +6,7 @@ import com.shubham.portfolio.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin(origins = "http://localhost:5173")
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
