@@ -17,8 +17,8 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(
-                "https://portfolio-fronted-diya.onrender.com",
-                "http://localhost:5173"
+                "https://portfolio-fronted-diya.onrender.com"
+               
         ));
 
         configuration.setAllowedMethods(List.of(
